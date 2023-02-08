@@ -1,31 +1,61 @@
 package com.example.restservice.usuario;
 
-import java.util.List;
-import java.util.ArrayList;
 
+import javax.persistence.*;
+
+
+@Entity
+@Table
 public class Usuario {
 
-    private static int asignadorId = 0;
-	private final int id;
+	@Id
+	@SequenceGenerator(
+		name = "usuario_sequence",
+		sequenceName = "usuario_sequence",
+		allocationSize = 1
+	)
+
+	@GeneratedValue(
+		generator = "usuario_sequence",
+		strategy = GenerationType.SEQUENCE)
+
+	private Long id;
+
+	@Column(name="nombre")
 	private  String nombre;
+
+	@Column(name="apellido")
 	private String apellido;
+
+	@Column(name="trabajo")
 	private  String trabajo;
-	private List<Integer> amigos;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 	public Usuario(String nombre,String apellido,String trabajo) {
-		this.id = asignadorId++;
 		this.nombre = nombre;
         this.apellido = apellido;
         this.trabajo = trabajo;
-		this.amigos = new ArrayList<Integer>();
 	}
 
+	public Usuario() {}
 
-	public void agregarAmigo(int amigo){
-		this.amigos.add(amigo);
-	}
 
-	public int getId() {
+
+	public Long getId() {
 		return this.id;
 	}
 
@@ -41,10 +71,6 @@ public class Usuario {
 		return this.trabajo;
 	}
 
-	public List<Integer> getAmigos() {
-		return this.amigos;
-	}
-
     public void setNombre(String nuevoNombre) {
         this.nombre=nuevoNombre;
 	}
@@ -55,5 +81,9 @@ public class Usuario {
 
 	public void setTrabajo(String nuevoTrabajo){
 		this.trabajo=nuevoTrabajo;
+	}
+
+	public void setId(Long id){
+		this.id = id;
 	}
 }

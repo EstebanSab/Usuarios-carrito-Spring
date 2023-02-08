@@ -1,58 +1,57 @@
 package com.example.restservice.usuario;
 
 import java.util.List;
-import java.util.ArrayList;
+
+
+
 
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 @Service
 public class UsuarioService{
-    private List<Usuario> usuarios;
+    private UsuarioRepositorio uRepositorio;
 
-    public UsuarioService(){
-        this.usuarios = new ArrayList<Usuario>();
+    @Autowired
+    public UsuarioService(UsuarioRepositorio uRepositorio){
+        this.uRepositorio = uRepositorio;
     }
 
 
 
     public List<Usuario> getAllUsuarios(){
-        return this.usuarios;
+        return this.uRepositorio.findAll();
     }
 
-    public Usuario getUsuarioById(int id){
-        return this.usuarios.get(id);
+    public  Usuario getUsuarioById(long id){
+        return this.uRepositorio.getReferenceById(id);
+        
     }
 
+    //Guardar nuevo usuario
     public void crearUsuario(Usuario nuevoUsuario){
-        this.usuarios.add(nuevoUsuario);
+       this.uRepositorio.save(nuevoUsuario);
     }
     
-    public Usuario modificarUsuario(int usuarioId,Usuario usuario){
+    @Transactional
+    public void modificarUsuario(Long id,Usuario usuario){
+        Usuario miUser = this.uRepositorio.getReferenceById(id);
+
+
         if(usuario.getApellido()!=null){
-            this.usuarios.get(usuarioId).setApellido(usuario.getApellido());
+            miUser.setApellido(usuario.getApellido());
         }
         if(usuario.getNombre()!=null){
-            this.usuarios.get(usuarioId).setNombre(usuario.getNombre());
+           miUser.setApellido(usuario.getApellido());
         }
         if(usuario.getTrabajo()!=null){
-            this.usuarios.get(usuarioId).setTrabajo(usuario.getTrabajo());
+            miUser.setApellido(usuario.getApellido());
         }
-       return  this.usuarios.get(usuarioId);
     }
 
-    public void eliminarUsuario(int usuarioId){
-        this.usuarios.remove(usuarioId);
-    }
-
-    public void agregarAmigo(int usuarioId,int amigoId){
-        if( this.usuarios.get(usuarioId)!=null
-        && this.usuarios.get(amigoId)!=null){
-
-            this.usuarios.get(usuarioId).agregarAmigo(amigoId);
-            this.usuarios.get(amigoId).agregarAmigo(usuarioId);
-        }
-    
+    public void eliminarUsuario(Long usuarioId){
+        this.uRepositorio.deleteById(usuarioId);
     }
 }

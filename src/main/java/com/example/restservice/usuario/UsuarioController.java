@@ -25,7 +25,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/usuario/{id}")
-     public Usuario getOneUsuario(@PathVariable int id) {
+     public Usuario getOneUsuario(@PathVariable Long id) {
         return this.usuarioService.getUsuarioById(id);
     }
 
@@ -39,22 +39,17 @@ public class UsuarioController {
       this.usuarioService.crearUsuario(nuevoUsuario);
     }
 
+    
     @PutMapping(path = "/usuario/{usuarioId}")
-    public Usuario modificarUsuario(
-        @PathVariable("usuarioId") int usuarioIdVariable,
+    public void modificarUsuario(
+        @PathVariable("usuarioId") Long usuarioIdVariable,
         @RequestBody Usuario usuario) {
-        return this.usuarioService.modificarUsuario(usuarioIdVariable,usuario);
+        this.usuarioService.modificarUsuario(usuarioIdVariable,usuario);
     }
 
     @DeleteMapping(path = "{usuarioId}")
-    public void eliminarUsuario(@PathVariable("usuarioId") int usuarioId){
+    public void eliminarUsuario(@PathVariable("usuarioId") Long usuarioId){
         this.usuarioService.eliminarUsuario(usuarioId);
     }       
 
-    @PutMapping(path = "/usuario/{usuarioId}/amigo/{amigoId}")
-    public void agregarAmigo(
-        @PathVariable("usuarioId") int usuarioIdVariable,
-        @PathVariable("amigoId") int amigoId) {
-        this.usuarioService.agregarAmigo(usuarioIdVariable,amigoId);
-    }
 }
